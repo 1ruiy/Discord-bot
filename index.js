@@ -8,8 +8,8 @@ const client = new Client({
     ]
 });
 
-const CHANNEL_ID = '1559095541986758696';
-const GUILD_ID = '1554195304629141625';
+const CHANNEL_ID = '1559104968894578749';
+const GUILD_ID = '1543168935036330085';
 
 client.once('ready', async () => {
     console.log(`تم تسجيل الدخول بنجاح باسم: ${client.user.tag}`);
