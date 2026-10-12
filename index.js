@@ -18,13 +18,20 @@ const client = new Client({
 const CHANNEL_ID = '1559104968894578749';
 const GUILD_ID = '1543168935036330085';
 
-function connectToVoice() {
+async function connectToVoice() {
     try {
-        const guild = client.guilds.cache.get(GUILD_ID);
-        if (!guild) return;
+        // استخدام fetch بدلاً من cache لضمان جلب البيانات الصحيحة
+        const guild = await client.guilds.fetch(GUILD_ID);
+        if (!guild) {
+            console.error("لم يتم العثور على السيرفر!");
+            return;
+        }
 
-        const channel = guild.channels.cache.get(CHANNEL_ID);
-        if (!channel) return;
+        const channel = await guild.channels.fetch(CHANNEL_ID);
+        if (!channel) {
+            console.error("لم يتم العثور على الروم الصوتية!");
+            return;
+        }
 
         joinVoiceChannel({
             channelId: channel.id,
@@ -39,12 +46,13 @@ function connectToVoice() {
     }
 }
 
-client.once('ready', () => {
+client.once('ready', async () => {
     console.log(`تم تسجيل الدخول باسم: ${client.user.tag}`);
-    connectToVoice();
+    await connectToVoice();
     
     // إعادة محاولة الاتصال كل 5 دقائق لضمان عدم الخروج
     setInterval(connectToVoice, 300000);
 });
 
 client.login(process.env.DISCORD_TOKEN);
+
